@@ -179,3 +179,57 @@ button:focus-visible, input:focus-visible { outline: 2px solid #ef6d45; outline-
   .scene-tip { bottom: 12px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+/* Laptop viewport fit: keep the desktop dashboard inside the visible screen. */
+@media (min-width: 761px) {
+  html, body { height: 100%; }
+  .app-shell {
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    padding: 0 24px 12px;
+    overflow: hidden;
+  }
+  .topbar { height: 58px; }
+  .workspace {
+    min-height: 0;
+    padding: 12px 0 10px;
+    gap: 14px;
+  }
+  .control-rail { min-height: 0; padding: 15px 16px 12px; }
+  .aircraft-card { margin: 13px 0 17px; padding: 9px; }
+  .aircraft-thumb { width: 60px; }
+  .section-title { margin-bottom: 13px; }
+  .control-block { margin-bottom: 16px; }
+  .control-line { margin-bottom: 9px; }
+  .range-captions { margin-top: 7px; }
+  .rail-divider { margin: 0 0 15px; }
+  .setting-row { margin-bottom: 12px; }
+  .reset-button { height: 35px; }
+  .rail-footnote { padding-top: 10px; font-size: 8px; }
+  .stage-topline { height: 52px; padding: 0 18px; }
+  .scene-container { min-height: 0; }
+  .stage-bottomline { min-height: 62px; padding: 0 18px; }
+  .bottom-bar { min-height: 58px; padding: 0 16px; gap: 14px; }
+  .telemetry-metrics { gap: clamp(16px, 3vw, 42px); padding-left: 12px; }
+  .metric { min-width: 76px; gap: 3px; }
+}
+
+@media (min-width: 761px) and (max-height: 800px) {
+  .topbar { height: 52px; }
+  .workspace { padding: 9px 0 8px; gap: 12px; }
+  .control-rail { padding: 12px 14px 9px; }
+  .aircraft-card { margin: 9px 0 12px; padding: 7px 8px; }
+  .aircraft-thumb { width: 54px; }
+  .section-title { margin-bottom: 10px; }
+  .control-block { margin-bottom: 12px; }
+  .control-line { margin-bottom: 7px; }
+  .range-captions { margin-top: 5px; }
+  .rail-divider { margin-bottom: 11px; }
+  .setting-row { margin-bottom: 9px; }
+  .rail-footnote { padding-top: 7px; }
+  .stage-topline { height: 46px; }
+  .stage-bottomline { min-height: 55px; }
+  .bottom-bar { min-height: 52px; }
+  .readout-item strong { font-size: 13px; }
+}
