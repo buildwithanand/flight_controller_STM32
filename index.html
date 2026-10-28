@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f3f5f7" />
+  <title>SKYLAB — Flight Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="./style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.166.1/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.166.1/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Skylab home">
+        <span class="brand-mark"><span></span><span></span><span></span><span></span></span>
+        <span class="brand-name">SKYLAB<span class="brand-divider">/</span><span class="brand-sub">FLIGHT TEST</span></span>
+      </a>
+      <div class="session-meta">
+        <span class="live-dot"></span>
+        <span>SIMULATION SESSION</span>
+        <span class="meta-divider"></span>
+        <span class="mono" id="sessionClock">00:00:00</span>
+      </div>
+      <div class="top-actions">
+        <div class="connection-pill"><span class="connection-dot"></span><span id="connectionLabel">LOCAL SIM</span></div>
+        <button class="icon-button" id="helpButton" title="Keyboard controls" aria-label="Keyboard controls">?</button>
+      </div>
+    </header>
+
+    <section class="workspace">
+      <aside class="control-rail">
+        <div class="rail-heading">
+          <span class="eyebrow">FLIGHT DECK</span>
+          <span class="tiny-index">01 / 03</span>
+        </div>
+
+        <div class="aircraft-card">
+          <div class="aircraft-thumb" aria-hidden="true">
+            <svg viewBox="0 0 180 92" role="img">
+              <g stroke="#687786" stroke-width="3" stroke-linecap="round" fill="none">
+                <path d="M90 46 L48 22 M90 46 L132 22 M90 46 L48 70 M90 46 L132 70"/>
+                <path d="M33 22 H63 M117 22 H147 M33 70 H63 M117 70 H147"/>
+              </g>
+              <g fill="#dce5ec" stroke="#8293a1" stroke-width="1.5">
+                <circle cx="48" cy="22" r="13"/><circle cx="132" cy="22" r="13"/>
+                <circle cx="48" cy="70" r="13"/><circle cx="132" cy="70" r="13"/>
+                <path d="M76 38 L100 38 L109 46 L100 54 L76 54 L67 46 Z" fill="#f9fbfc"/>
+              </g>
+              <path d="M90 40 L95 46 L90 52 L85 46 Z" fill="#ef6d45"/>
+              <path d="M90 35 V25" stroke="#ef6d45" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="aircraft-info">
+            <span class="eyebrow">AIRFRAME</span>
+            <strong>QUAD-X / 01</strong>
+            <span class="muted">Experimental platform</span>
+          </div>
+          <span class="aircraft-state">READY</span>
+        </div>
+
+        <div class="section-title"><span>ATTITUDE</span><span class="unit-label">DEG</span></div>
+        <div class="control-block">
+          <div class="control-line"><label for="pitchSlider">Pitch <span class="axis-tag">P</span></label><output id="pitchValue">0.0°</output></div>
+          <input id="pitchSlider" class="attitude-slider pitch-slider" type="range" min="-45" max="45" step="0.5" value="0" />
+          <div class="range-captions"><span>NOSE DOWN</span><span>NOSE UP</span></div>
+        </div>
+        <div class="control-block">
+          <div class="control-line"><label for="rollSlider">Roll <span class="axis-tag">R</span></label><output id="rollValue">0.0°</output></div>
+          <input id="rollSlider" class="attitude-slider roll-slider" type="range" min="-45" max="45" step="0.5" value="0" />
+          <div class="range-captions"><span>LEFT</span><span>RIGHT</span></div>
+        </div>
+        <div class="control-block">
+          <div class="control-line"><label for="yawSlider">Yaw <span class="axis-tag">Y</span></label><output id="yawValue">0°</output></div>
+          <input id="yawSlider" class="attitude-slider yaw-slider" type="range" min="-180" max="180" step="1" value="0" />
+          <div class="range-captions"><span>−180°</span><span>+180°</span></div>
+        </div>
+
+        <div class="rail-divider"></div>
+        <div class="section-title"><span>SIMULATION</span><span class="status-label"><span class="status-dot"></span>ACTIVE</span></div>
+        <div class="setting-row">
+          <div><strong>Motion response</strong><span>Ease into attitude changes</span></div>
+          <label class="switch"><input id="smoothToggle" type="checkbox" checked /><span class="switch-track"></span></label>
+        </div>
+        <div class="setting-row">
+          <div><strong>Propeller spin</strong><span>Visual motor animation</span></div>
+          <label class="switch"><input id="propToggle" type="checkbox" checked /><span class="switch-track"></span></label>
+        </div>
+        <button id="resetButton" class="reset-button"><span class="reset-icon">↺</span> Reset attitude <span class="shortcut">R</span></button>
+        <div class="rail-footnote"><span class="info-icon">i</span><span>Visual simulator only. No real flight-control outputs are generated.</span></div>
+      </aside>
+
+      <section class="sim-stage" aria-label="3D drone simulator">
+        <div class="stage-topline">
+          <div class="scene-title"><span class="eyebrow">ENVIRONMENT</span><strong>TEST RANGE <span class="scene-separator">/</span> DAYLIGHT</strong></div>
+          <div class="stage-tools">
+            <button class="view-button active" data-view="orbit">ORBIT <span>01</span></button>
+            <button class="view-button" data-view="pilot">PILOT <span>02</span></button>
+            <button class="view-button" data-view="top">TOP <span>03</span></button>
+          </div>
+        </div>
+        <div id="sceneContainer" class="scene-container">
+          <div class="scene-sky"></div>
+          <div class="horizon-label"><span class="horizon-line"></span><span>HORIZON</span><span class="horizon-line"></span></div>
+          <div class="scene-crosshair" aria-hidden="true"><span></span><span></span></div>
+          <div class="scene-coordinates"><span class="coordinate-label">LOCAL FRAME</span><strong>X <span id="coordX">+0.00</span></strong><strong>Y <span id="coordY">+0.00</span></strong><strong>Z <span id="coordZ">+0.00</span></strong></div>
+          <div class="scene-status"><span class="scene-status-dot"></span><span>3D VIEWPORT</span><span class="status-separator">·</span><span>60 FPS TARGET</span></div>
+          <div class="scene-tip" id="sceneTip"><span class="mouse-icon">↔</span> DRAG TO ORBIT <span class="tip-divider"></span> SCROLL TO ZOOM</div>
+          <div id="sceneLoader" class="scene-loader"><div class="loader-ring"></div><span>INITIALIZING TEST RANGE</span></div>
+        </div>
+        <div class="stage-bottomline">
+          <div class="attitude-readout">
+            <div class="readout-item"><span class="readout-key">PITCH</span><strong id="hudPitch">+00.0<span>°</span></strong></div>
+            <div class="readout-item"><span class="readout-key">ROLL</span><strong id="hudRoll">+00.0<span>°</span></strong></div>
+            <div class="readout-item"><span class="readout-key">YAW</span><strong id="hudYaw">000<span>°</span></strong></div>
+          </div>
+          <div class="stage-bottom-actions"><span class="sim-state"><span class="status-dot"></span>SIM READY</span><button id="centerCameraButton" class="text-button">CENTER CAMERA <span>↗</span></button></div>
+        </div>
+      </section>
+    </section>
+
+    <footer class="bottom-bar">
+      <div class="telemetry-title"><span class="telemetry-symbol">⌁</span><span>TELEMETRY</span><span class="telemetry-muted">/ SIMULATED</span></div>
+      <div class="telemetry-metrics">
+        <div class="metric"><span>ALTITUDE</span><strong id="altitudeMetric">2.4 <small>m</small></strong></div>
+        <div class="metric"><span>VERT. SPEED</span><strong id="verticalMetric">0.0 <small>m/s</small></strong></div>
+        <div class="metric"><span>BATTERY</span><strong>98 <small>%</small></strong><div class="battery-bar"><span></span></div></div>
+        <div class="metric"><span>LINK QUALITY</span><strong>— <small>not connected</small></strong></div>
+      </div>
+      <div class="bottom-right"><span class="build-label">BUILD <strong>0.1.0</strong></span><span class="bottom-separator"></span><span class="build-label">WEBGL <strong id="webglState">CHECKING</strong></span></div>
+    </footer>
+  </main>
+
+  <div class="help-modal" id="helpModal" aria-hidden="true">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <section class="help-card" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <button class="modal-close" id="closeHelp" aria-label="Close help">×</button>
+      <span class="eyebrow">QUICK REFERENCE</span>
+      <h2 id="helpTitle">Flight deck controls</h2>
+      <p>Use the keyboard or attitude controls to move the drone. This is a visual test environment, not a physical flight controller.</p>
+      <div class="key-list">
+        <div><span class="keycap">W</span><span>Pitch nose down</span></div>
+        <div><span class="keycap">S</span><span>Pitch nose up</span></div>
+        <div><span class="keycap">A</span><span>Roll left</span></div>
+        <div><span class="keycap">D</span><span>Roll right</span></div>
+        <div><span class="keycap">Q</span><span>Yaw left</span></div>
+        <div><span class="keycap">E</span><span>Yaw right</span></div>
+        <div><span class="keycap">R</span><span>Reset attitude</span></div>
+        <div><span class="keycap">DRAG</span><span>Orbit camera</span></div>
+      </div>
+      <button class="modal-done" id="doneHelp">Got it</button>
+    </section>
+  </div>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
